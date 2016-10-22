@@ -31,8 +31,6 @@
   tags:
     # ANSIBLE0012 Commands should not change things if nothing needs doing
     - skip_ansible_lint
-  notify:
-    - restart prosperdashboard
 
 - name: get prosperdashboard static source
   git:
@@ -54,6 +52,4 @@
   template:
     src: prosperdashboard.conf.j2
     dest: /etc/init/prosperdashboard.conf
-    mode: 0755
-  notify:
-    - restart prosperdashboard
+    mode: 0644
