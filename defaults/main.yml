@@ -1,0 +1,11 @@
+---
+prosperdashboard_user: prosperdashboard
+prosperdashboard_group: "{{ prosperdashboard_user }}"
+prosperdashboard_gopath: "/home/{{ prosperdashboard_user }}/go"
+prosperdashboard_goroot: /usr/local/go
+# Location of prosperdashboard's static web files.
+prosperdashboard_static_root: /var/www/prosperdashboard
+# Port on which prosperdashboard listens for application requests.
+prosperdashboard_app_port: 8082
+# Port on which prosperdashboard listens for external web requests.
+prosperdashboard_web_port: 80
