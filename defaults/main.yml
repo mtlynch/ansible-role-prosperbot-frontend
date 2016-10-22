@@ -1,11 +1,11 @@
 ---
-prosperdashboard_user: prosperdashboard
-prosperdashboard_group: "{{ prosperdashboard_user }}"
-prosperdashboard_gopath: "/home/{{ prosperdashboard_user }}/go"
-prosperdashboard_goroot: /usr/local/go
-# Location of prosperdashboard's static web files.
-prosperdashboard_static_root: /var/www/prosperdashboard
-# Port on which prosperdashboard listens for application requests.
-prosperdashboard_app_port: 8082
-# Port on which prosperdashboard listens for external web requests.
-prosperdashboard_web_port: 80
+prosperbot_frontend_user: prosperbot-frontend
+prosperbot_frontend_group: "{{ prosperbot_frontend_user }}"
+prosperbot_frontend_gopath: "/home/{{ prosperbot_frontend_user }}/go"
+prosperbot_frontend_goroot: /usr/local/go
+# Location of prosperbot-frontend's static web files.
+prosperbot_frontend_static_root: /var/www/prosperbot-frontend
+# Port on which prosperbot-frontend listens for application requests.
+prosperbot_frontend_app_port: 8082
+# Port on which prosperbot-frontend listens for external web requests.
+prosperbot_frontend_web_port: 80

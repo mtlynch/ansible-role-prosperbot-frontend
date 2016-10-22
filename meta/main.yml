@@ -13,6 +13,6 @@ galaxy_info:
     - prosper
     - p2p lending
     - prosperbot
-    - prosperdashboard
+    - prosperbot-frontend
 dependencies:
   - { role: joshualund.golang }

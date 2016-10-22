@@ -1,7 +1,7 @@
-# Ansible Role: ProsperBot
+# Ansible Role: ProsperBot Frontend
 
-[![Build Status](https://travis-ci.org/mtlynch/ansible-role-prosperdashboard.svg?branch=master)](https://travis-ci.org/mtlynch/ansible-role-prosperdashboard)
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-prosperdashboard-blue.svg?style=flat-square)](https://galaxy.ansible.com/mtlynch/prosperdashboard)
+[![Build Status](https://travis-ci.org/mtlynch/ansible-role-prosperbot-frontend.svg?branch=master)](https://travis-ci.org/mtlynch/ansible-role-prosperbot-frontend)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-prosperbot-frontend-blue.svg?style=flat-square)](https://galaxy.ansible.com/mtlynch/prosperbot-frontend)
 [![License](http://img.shields.io/:license-apache-blue.svg?style=flat-square)](LICENSE)
 
 ## Role Variables
