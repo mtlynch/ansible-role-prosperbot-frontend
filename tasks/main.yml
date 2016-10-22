@@ -1,0 +1,59 @@
+---
+- name: create prosperdashboard group
+  group:
+    name: "{{ prosperdashboard_group }}"
+    state: "present"
+
+- name: create prosperdashboard user
+  user:
+    name: "{{ prosperdashboard_user }}"
+    group: "{{ prosperdashboard_group }}"
+    system: "yes"
+
+- name: create gopath directory
+  file:
+    path: "{{ prosperdashboard_gopath }}"
+    state: directory
+    owner: "{{ prosperdashboard_user }}"
+    group: "{{ prosperdashboard_group }}"
+
+- name: install git
+  apt:
+    name: git
+    state: installed
+
+- name: get prosperdashboard app source
+  command: go get -u github.com/mtlynch/prosperbot-frontend
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ prosperdashboard_goroot }}/bin"
+    GOPATH: "{{ prosperdashboard_gopath }}"
+    GOROOT: "{{ prosperdashboard_goroot }}"
+  tags:
+    # ANSIBLE0012 Commands should not change things if nothing needs doing
+    - skip_ansible_lint
+  notify:
+    - restart prosperdashboard
+
+- name: get prosperdashboard static source
+  git:
+    repo: https://github.com/mtlynch/prosperbot-frontend-static.git
+    dest: "{{ prosperdashboard_static_root }}"
+  tags:
+    # ANSIBLE0004 Git checkouts must contain explicit version
+    - skip_ansible_lint
+
+- name: fix dashboard permissions
+  file:
+    path: "{{ prosperdashboard_static_root }}"
+    state: directory
+    owner: "{{ prosperdashboard_user }}"
+    group: "{{ prosperdashboard_group }}"
+    recurse: yes
+
+- name: copy upstart script
+  template:
+    src: prosperdashboard.conf.j2
+    dest: /etc/init/prosperdashboard.conf
+    mode: 0755
+  notify:
+    - restart prosperdashboard
