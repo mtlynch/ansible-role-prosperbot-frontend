@@ -1,0 +1,5 @@
+---
+- name: restart prosperbot-frontend
+  service:
+    name: prosperbot-frontend
+    state: restarted
