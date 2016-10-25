@@ -31,6 +31,8 @@
   tags:
     # ANSIBLE0012 Commands should not change things if nothing needs doing
     - skip_ansible_lint
+  notify:
+    - restart prosperbot-frontend
 
 - name: get prosperbot-frontend static source
   git:
@@ -53,3 +55,5 @@
     src: prosperbot-frontend.conf.j2
     dest: /etc/init/prosperbot-frontend.conf
     mode: 0644
+  notify:
+    - restart prosperbot-frontend

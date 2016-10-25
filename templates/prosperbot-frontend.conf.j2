@@ -8,13 +8,10 @@ respawn
 setuid prosperbot-frontend
 setgid prosperbot-frontend
 
-env GOPATH={{ prosperbot_frontend_gopath }}
-env GOROOT={{ prosperbot_frontend_goroot }}
-env PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:{{ prosperbot_frontend_goroot }}/bin
-
 respawn
 
 script
-	cd $GOPATH/src/github.com/mtlynch/prosperbot-frontend
-	go run main.go --port {{ prosperbot_frontend_app_port }}
+	cd {{ prosperbot_frontend_gopath }}/src/github.com/mtlynch/prosperbot-frontend
+	{{ prosperbot_frontend_goroot }}/bin/go run main.go \
+    --port {{ prosperbot_frontend_app_port }}
 end script
