@@ -34,7 +34,7 @@ prosperbot_frontend_app_port: 8082
 
 Port on which prosperbot-frontend listens for application requests.
 
-``yaml
+```yaml
 prosperbot_frontend_web_port: 80
 ```
 
