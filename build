@@ -37,7 +37,8 @@ sudo docker exec "${container_id}" \
 sudo docker exec "${container_id}" \
   env TERM=xterm \
   ansible-lint /etc/ansible/roles/role_under_test/tests/test.yml \
-    --exclude /etc/ansible/roles/joshualund.golang
+    --exclude /etc/ansible/roles/joshualund.golang \
+    --exclude /etc/ansible/roles/geerlingguy.nginx
 
 # Check that role installs successfully.
 sudo docker exec "${container_id}" \
