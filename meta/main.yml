@@ -16,3 +16,4 @@ galaxy_info:
     - prosperbot-frontend
 dependencies:
   - { role: joshualund.golang }
+  - { role: geerlingguy.nginx }
