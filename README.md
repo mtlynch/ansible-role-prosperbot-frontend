@@ -68,6 +68,9 @@ prosperbot_prosper_password: [insert your Prosper password]
 
 ```yaml
 - hosts: all
+  become: true
+  become_user: root
+  become_method: sudo
   vars_files:
     - secrets.yml
   vars:
