@@ -57,3 +57,27 @@
     mode: 0644
   notify:
     - restart prosperbot-frontend
+
+
+- name: configure variables for nginx role
+  set_fact:
+    nginx_vhosts:
+    - listen: "{{ prosperbot_frontend_web_port }} default_server"
+      server_name: "prosperbot_frontend"
+      root: "{{ prosperbot_frontend_static_root }}/"
+      index: "index.html index.htm"
+      extra_parameters: |
+         location /notes {
+           root {{ prosperbot_frontend_static_root }}/notes.html;
+         }
+         location /notes.json {
+           proxy_pass http://localhost:{{ prosperbot_frontend_app_port }};
+         }
+         location /cashBalanceHistory {
+           proxy_pass http://localhost:{{ prosperbot_frontend_app_port }};
+         }
+         location /accountValueHistory {
+           proxy_pass http://localhost:{{ prosperbot_frontend_app_port }};
+         }
+    nginx_remove_default_vhost: true
+    nginx_user: "{{ prosperbot_frontend_user }}"
