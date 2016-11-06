@@ -3,15 +3,16 @@ description "Run prosperbot-frontend"
 start on runlevel [3]
 stop on runlevel [!2345]
 
-respawn
-
 setuid prosperbot-frontend
 setgid prosperbot-frontend
+
+env GOPATH={{ prosperbot_frontend_gopath }}
+env GOROOT={{ prosperbot_frontend_goroot }}
 
 respawn
 
 script
 	cd {{ prosperbot_frontend_gopath }}/src/github.com/mtlynch/prosperbot-frontend
 	{{ prosperbot_frontend_goroot }}/bin/go run main.go \
-    --port {{ prosperbot_frontend_app_port }}
+		--port {{ prosperbot_frontend_app_port }}
 end script
