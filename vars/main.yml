@@ -7,7 +7,7 @@ nginx_vhosts:
   index: "index.html index.htm"
   extra_parameters: |
      location /notes {
-       root {{ prosperbot_frontend_static_root }}/notes.html;
+       try_files $uri $uri.html;
      }
      location /notes.json {
        proxy_pass http://localhost:{{ prosperbot_frontend_app_port }};
