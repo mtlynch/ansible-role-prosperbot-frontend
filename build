@@ -3,14 +3,12 @@
 # Exit immediately on error
 set -e
 
-# Pull container.
-sudo docker pull geerlingguy/docker-${distro}-ansible:latest
+echo "FROM geerlingguy/docker-${distro}-ansible:latest" > tests/Dockerfile
 
 # Customize container
 container_tag=${distro}:ansible
 sudo docker build \
   --rm=true \
-  --file=tests/Dockerfile.${distro} \
   --tag=${container_tag} tests
 
 # Run container in detached state
@@ -33,13 +31,6 @@ sudo docker exec "${container_id}" \
   ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml \
     --syntax-check
 
-# Ansible lint check.
-sudo docker exec "${container_id}" \
-  env TERM=xterm \
-  ansible-lint /etc/ansible/roles/role_under_test/tests/test.yml \
-    --exclude /etc/ansible/roles/joshualund.golang \
-    --exclude /etc/ansible/roles/geerlingguy.nginx
-
 # Check that role installs successfully.
 sudo docker exec "${container_id}" \
   env TERM=xterm \
@@ -48,3 +39,9 @@ sudo docker exec "${container_id}" \
 # Clean up
 sudo docker stop "${container_id}"
 sudo docker rm "${container_id}"
+rm tests/Dockerfile
+
+# Check role for linter errors.
+ansible-lint /etc/ansible/roles/role_under_test/tests/test.yml \
+  --exclude /etc/ansible/roles/joshualund.golang \
+  --exclude /etc/ansible/roles/geerlingguy.nginx
