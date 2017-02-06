@@ -2,5 +2,6 @@
 
 export distro=ubuntu1404
 export init=/sbin/init
+export run_opts=""
 
 bash -x ./build
