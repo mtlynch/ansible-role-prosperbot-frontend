@@ -1,47 +1,49 @@
-#!/bin/bash
+#!/bin/sh
 
 # Exit immediately on error
 set -e
 
-echo "FROM geerlingguy/docker-${distro}-ansible:latest" > tests/Dockerfile
+cd tests/
 
-# Customize container
-container_tag=${distro}:ansible
-sudo docker build \
+cp "Dockerfile-${distro}" Dockerfile
+
+# Build container
+container_tag=${distro}
+docker build \
   --rm=true \
-  --tag=${container_tag} tests
+  --tag=${container_tag} .
 
 # Run container in detached state
 id_file=$(mktemp)
-sudo docker run \
+docker run \
   --detach \
   --volume="${PWD}":/etc/ansible/roles/role_under_test:ro \
   ${container_tag} ${init} > "${id_file}"
 container_id="$(cat $id_file)"
 echo "Container ID:" "${container_id}"
 
-# Install dependencies.
-sudo docker exec "${container_id}" \
-  ansible-galaxy install \
-    -r /etc/ansible/roles/role_under_test/tests/requirements.yml
+printf "${container_id} ansible_connection=docker\n" > hosts
+
+# Print ansible version.
+ansible --version
+
+ansible-galaxy install -r requirements.yml
+
+# Create a symlink to the role under test (removing previous if it existed)
+mkdir -p roles
+rm roles/role_under_test || true
+ln -s ../../ roles/role_under_test
 
 # Ansible syntax check.
-sudo docker exec "${container_id}" \
-  env TERM=xterm \
-  ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml \
-    --syntax-check
+ansible-playbook test.yml --syntax-check
 
 # Check that role installs successfully.
-sudo docker exec "${container_id}" \
-  env TERM=xterm \
-  ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml
-
-# Clean up
-sudo docker stop "${container_id}"
-sudo docker rm "${container_id}"
-rm tests/Dockerfile
+ansible-playbook test.yml
 
 # Check role for linter errors.
-ansible-lint /etc/ansible/roles/role_under_test/tests/test.yml \
-  --exclude /etc/ansible/roles/joshualund.golang \
-  --exclude /etc/ansible/roles/geerlingguy.nginx
+ansible-lint test.yml -t role_under_test
+
+# Clean up
+docker stop "${container_id}"
+docker rm "${container_id}"
+rm Dockerfile
