@@ -1,3 +1,11 @@
 FROM ubuntu:trusty
 
 ENV TERM=xterm
+
+# Install dependencies.
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    python-simplejson sudo \
+  && rm -rf /var/lib/apt/lists/* \
+  && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
+  && apt-get clean
